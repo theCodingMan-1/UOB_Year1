@@ -10,7 +10,6 @@ int collatz(int num) {
         printf("%d\n", num);
         if (num % 2 == 0) {
             next = collatz(num / 2);
-            
         }
         else {
             next = collatz((3 * num) + 1);
