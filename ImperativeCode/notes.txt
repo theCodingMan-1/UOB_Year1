@@ -1,0 +1,6 @@
+There are a lot of arithmetic types
+
+0 is interpreted as False
+All non-zero values are interpreted as True
+21 //True
+!37 //False

@@ -1,0 +1,17 @@
+We compile a Haskell file by first running 'ghci' into the terminal
+
+We then run ':l [file name]'
+This compiles the file
+
+':r' compiles the previously compiled file
+
+
+-- for comments
+/= -> doesn't equal
+
+if statemnts  -> if ......... then ............ else
+(you must have an else)
+Instead of if statments you can use guards: | case1 = outcome1 | case2 = outcome2 | otherwise = outcome3
+
+functions -> "func x y =" names the function (func) and its inputs (x, y)
+"func' x y =" allows you to make another version of the function (func')
