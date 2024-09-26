@@ -43,7 +43,7 @@ int grade(int mark) {
 
 //find the sum of the numbers from 1 to n. RECURSIVE
 int sum(int n) {
-    if (n = 1) return 1;
+    if (n = 1) return 1;  // There must be a termination point, otherwise it will continue forever
     else return n + sum(n - 1);
 }
 
