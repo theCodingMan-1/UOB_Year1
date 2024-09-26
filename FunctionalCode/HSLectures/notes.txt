@@ -15,3 +15,6 @@ Instead of if statments you can use guards: | case1 = outcome1 | case2 = outcome
 
 functions -> "func x y =" names the function (func) and its inputs (x, y)
 "func' x y =" allows you to make another version of the function (func')
+
+
+
