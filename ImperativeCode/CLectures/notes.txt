@@ -19,3 +19,20 @@ The Four Laws of Programs
 
 - Programs must be efficient,
     provided this does not conflict with the previous laws.
+
+
+
+
+
+
+
+
+Increment and decrement operators
+
+n++; // means n = n + 1
+++n; // means n = n + 1
+n += 1; // means n = n + 1
+
+n--; // means n = n - 1
+--n; // means n = n - 1
+n -= 1; // means n = n - 1

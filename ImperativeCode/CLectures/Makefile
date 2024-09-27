@@ -6,3 +6,9 @@ test:
 	clang $(OPTIONS) test.c -o test \
 		$(ENDING)
 	./test
+
+.PHONY: LJ
+LJ:
+	clang $(OPTIONS) LoopsJumps.c -o LoopsJumps \
+		$(ENDING)
+	./LoopsJumps
