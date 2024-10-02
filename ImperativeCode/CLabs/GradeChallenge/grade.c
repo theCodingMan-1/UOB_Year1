@@ -16,14 +16,14 @@ bool validate(int n, const char mark[]) {
     else {
         if (n == 1) {
             if (mark[0] - '0' <= 9 && mark[0] - '0' >= 0) { 
-                // if the digit is between 0 - 9 then it passes the validation
+                // if the digit is between 0 - 9 then it passes the validation, e.g 4
                 return true;
             }
             else return false;
         }
         else if (n == 2) {
             if (mark[0] - '0' <= 9 && mark[0] - '0' >= 0 && mark[1] - '0' <= 9 && mark[1] - '0' >= 0) {
-                // if both digits are between 0 - 9 then is passes the validation
+                // if both digits are between 0 - 9 then is passes the validation, e.g 29
                 return true;
             }
             else return false;
