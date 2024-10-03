@@ -36,3 +36,18 @@ n += 1; // means n = n + 1
 n--; // means n = n - 1
 --n; // means n = n - 1
 n -= 1; // means n = n - 1
+
+
+
+
+Passing by values
+- if a variable is passed by value into the argument variable, its value is copied 
+and the copy is only available for the scope of the function.
+- Any changes made to the argument variable have no effect on the origional variable
+
+Passing by reference
+- Array arguments are passed by reference
+-The argument variable is made to refer to the origional array, 
+because copying a larage array would be expensive.
+- This means that if the function changes any elements of the array, 
+those changes are seen on the origional. 
