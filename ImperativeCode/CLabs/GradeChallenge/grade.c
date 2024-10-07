@@ -15,13 +15,15 @@ bool validate(int n, const char mark[]) {
 
     else {
         if (n == 1) {
-            if (mark[0] - '0' <= 9 && mark[0] - '0' >= 0) {
+            if (mark[0] - '0' <= 9 && mark[0] - '0' >= 0) { 
+                // if the digit is between 0 - 9 then it passes the validation, e.g 4
                 return true;
             }
             else return false;
         }
         else if (n == 2) {
             if (mark[0] - '0' <= 9 && mark[0] - '0' >= 0 && mark[1] - '0' <= 9 && mark[1] - '0' >= 0) {
+                // if both digits are between 0 - 9 then is passes the validation, e.g 29
                 return true;
             }
             else return false;
@@ -29,6 +31,9 @@ bool validate(int n, const char mark[]) {
         }
         else if (n == 3) {
             if (mark[0] - '0' == 1 &&  mark[1] - '0' == 0  && mark[2] - '0' == 0) {
+                // the only three digit number that works is if it equals 100, 
+                // so the first digit must equal 1 and the second and third must equal 0
+                // to pass the validation.
                 return true;
             }
             else return false;
@@ -43,9 +48,17 @@ bool validate(int n, const char mark[]) {
 // The argument n is the length of the string (normally 1 or 2 or 3).
 int convert(int n, const char mark[]) {
     
-    if (validate(n, mark) == true) {
+    if (validate(n, mark) == true) { // only converts if the mark is a valid number
+
+    /*
+    mark[0] - '0' gets the ASCII value of the number represented by the character mark[0],
+    (mark[0] will be anywhere from '0' to '9', which gives it an ASCII value between 48 and 57)
+    and takes the ASCII value of the character '0' away from it. 
+    This gives the ASCII value that will be somewhere between 0 - 9,
+    which is equal to the character represented in mark[0].
+    */
         switch (n) {
-            case 1: return mark[0] - '0'; break;
+            case 1: return mark[0] - '0'; break; 
 
             case 2: {
                 int tens = (mark[0] - '0') * 10;
