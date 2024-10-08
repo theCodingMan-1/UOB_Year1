@@ -16,7 +16,7 @@ power n k  = n * power n (k-1)
 -- Task 1 -------------------------
 
 stepsPower :: Integer -> Integer -> Integer
-stepsPower n k = error "Implement me!"
+stepsPower n k = k + 1
 
 -- Task 2 -------------------------
 
