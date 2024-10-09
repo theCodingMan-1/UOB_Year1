@@ -1,0 +1,38 @@
+cabal-version:      2.4
+
+name:               PowerToThePeople
+version:            0.1.0.0
+
+synopsis:           Haskell Coursework 1
+
+library
+    hs-source-dirs:   src
+    exposed-modules:  Power,
+                      Tests
+    build-depends:    base >=4.11.0.0,
+                      tasty == 1.5,
+                      tasty-quickcheck == 0.10.*,
+    default-language: Haskell2010
+
+test-suite PowerTest
+    type:             exitcode-stdio-1.0
+    -- Directories containing source files.
+    hs-source-dirs:   test
+    main-is:          Main.hs
+    build-depends:    base >=4.11.0.0,
+                      PowerToThePeople,
+                      tasty == 1.5,
+                      tasty-quickcheck == 0.10.*,
+    default-language: Haskell2010
+
+executable mark
+    main-is: Main.hs
+    hs-source-dirs: mark
+    build-depends:  base >=4.11.0.0,
+                    flow,
+                    PowerToThePeople,
+                    string-interpolate,
+                    tasty ^>= 1.5,
+                    tasty-quickcheck,
+                    text
+    default-language: Haskell2010
