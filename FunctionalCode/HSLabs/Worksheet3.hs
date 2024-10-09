@@ -49,3 +49,7 @@ checkForErrors xs = checkForErrors' [] xs
         checkForErrors' _ ((Left x) : xs) = Left x
         checkForErrors' list [] = Right (reverse list)
         checkForErrors' list ((Right x) : xs) = checkForErrors' (x : list) xs
+
+
+
+
