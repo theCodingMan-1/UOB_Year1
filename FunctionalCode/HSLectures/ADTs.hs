@@ -51,3 +51,12 @@ data Maybe a = Just a | Nothing
 -- getAge'' (MkUser'' age name) = Just age
 -- getAge'' (Anon cookie) = Nothing
 
+-------------------------------------------------------------------------------------------------
+
+
+data Expr = Lit Int | Add Expr Expr
+-- recursive data type since its refering to itself. 
+
+eval :: Expr -> Int
+eval (Lit x) = x
+eval (Add x y) = eval x + eval y
