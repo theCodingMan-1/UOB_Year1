@@ -51,3 +51,13 @@ Passing by reference
 because copying a larage array would be expensive.
 - This means that if the function changes any elements of the array, 
 those changes are seen on the origional. 
+
+
+
+
+
+
+
+Pointers:
+
+- Since we don't know (and don't need to know) where the memory is, we visualise it as randomly scattered data points
