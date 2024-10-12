@@ -22,19 +22,21 @@ stepsPower n k = k + 1
 
 -- Task 2 -------------------------
 
-replicate' :: Int -> a -> [a]
+replicate' :: Integral a => a -> a -> [a]
 replicate' k n = replicate'' [] k n
    where
-      replicate'' :: [a] -> Int -> a -> [a]
+      replicate'' :: Integral a => [a] -> a -> a -> [a]
       replicate'' list 0 n = []
-      replicate'' list 1 n = list
+      replicate'' list 1 n = n : list
       replicate'' list k n = replicate'' (n : list) (k - 1) n
 
-product' :: Num a => [a] -> a
-product [] = 1
+product' :: Integral a => [a] -> a
+product' [] = 1
 product' (x : xs) = x * product' xs 
 
 power1 :: Integral a => a -> a -> a
+power1 n k
+   | k < 0 = 1
 power1 n k = product' (replicate' k n)
 
 -- Task 3 -------------------------
