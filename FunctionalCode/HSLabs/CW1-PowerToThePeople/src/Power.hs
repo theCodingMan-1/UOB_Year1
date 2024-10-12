@@ -32,7 +32,7 @@ replicate' k n = replicate'' [] k n
 
 product' :: Integral a => [a] -> a
 product' [] = 1
-product' (x : xs) = x * product' xs 
+product' (x : xs) = x * product' xs
 
 power1 :: Integral a => a -> a -> a
 power1 n k
@@ -42,7 +42,11 @@ power1 n k = product' (replicate' k n)
 -- Task 3 -------------------------
 
 power2 :: Integral a => a -> a -> a
-power2 n k = error "Implement me!"
+power2 n 1 = n
+power2 n k
+   | k <= 0 = 1
+   | mod k 2 == 1 =  n * power2 n (k - 1)
+   | otherwise = power2 (n * n) (div k 2)
 
 -- Task 4 -------------------------
 
