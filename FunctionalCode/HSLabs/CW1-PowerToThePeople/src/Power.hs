@@ -51,13 +51,21 @@ power2 n k
 -- Task 4 -------------------------
 
 comparePower1 :: Integer -> Integer -> Bool
-comparePower1 n k = error "Implement me!"
+comparePower1 n k
+   | power n k == power1 n k = True
+   | otherwise = False
 
 comparePower2 :: Integer -> Integer -> Bool
-comparePower2 n k = error "Implement me!"
+comparePower2 n k
+   | power n k == power2 n k = True
+   | otherwise = False
 
 -- Task 5 -------------------------
 
 -- Each entry should be in this format: (n, k, result of comparePower1, result of comparePower2)
 comparisonList :: [Integer] -> [Integer] -> [(Integer, Integer, Bool, Bool)]
-comparisonList ns ks = error "Implement me!"
+comparisonList ns ks = comparisonList' [] ns ks
+   where
+      comparisonList' :: [(Integer, Integer, Bool, Bool)] -> [Integer] -> [Integer] -> [(Integer, Integer, Bool, Bool)]
+      comparisonList' list [] [] = reverse list
+      comparisonList' list (n : ns) (k : ks) = comparisonList' ((n, k, comparePower1 n k, comparePower2 n k) : list) ns ks
