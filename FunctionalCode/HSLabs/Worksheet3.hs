@@ -20,12 +20,12 @@ isJust Nothing = False
 
 fromMaybe :: a -> Maybe a -> a
 fromMaybe y (Just x) = x
-fromMaybe y (Nothing) = y
+fromMaybe y Nothing = y
 
 
 -- 1.3
 forget :: Either String a -> Maybe a
-forget (Right y) = (Just y)
+forget (Right y) = Just y
 
 
 -- 1.4
