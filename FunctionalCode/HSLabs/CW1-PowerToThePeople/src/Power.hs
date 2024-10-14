@@ -63,9 +63,8 @@ comparePower2 n k
 -- Task 5 -------------------------
 
 -- Each entry should be in this format: (n, k, result of comparePower1, result of comparePower2)
+
 comparisonList :: [Integer] -> [Integer] -> [(Integer, Integer, Bool, Bool)]
-comparisonList ns ks = comparisonList' [] ns ks
-   where
-      comparisonList' :: [(Integer, Integer, Bool, Bool)] -> [Integer] -> [Integer] -> [(Integer, Integer, Bool, Bool)]
-      comparisonList' list [] [] = reverse list
-      comparisonList' list (n : ns) (k : ks) = comparisonList' ((n, k, comparePower1 n k, comparePower2 n k) : list) ns ks
+comparisonList ns ks = [(n, k, comparePower1 n k, comparePower2 n k) | n <- ns, k <- ks]
+
+
