@@ -20,3 +20,4 @@ int main(void){
     // while *p holds the value of that variable
     return 0;
 }
+

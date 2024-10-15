@@ -22,7 +22,7 @@ int convert(const char length[]) {
     // 10 represents the base of the number system.
 
     if (endptr == length) return -1;
-    // this means so digits were found within the string (i.e "hello")
+    // this means no digits were found within the string (i.e "hello")
 
     else if (*endptr != '\0') return -1;
     // invalid character within the set (i.e "4y")

@@ -5,16 +5,30 @@
 
 // Find the length of a string, assuming it has a null terminator (like strlen).
 int length(const char s[]) {
-    return 0;
+    int length = 0;
+    while (s[length] != '\0') {
+        length++;
+    }
+    return length;
 }
 
 // Copy string s into the character array t (like strcpy).
 void copy(char t[], const char s[]) {
+    int len = length(s);
+    int i = 0;
+    while (i < len) {
+        t[i] = s[i];
+        i++;
+    }
+    t[i] = '\0';
 }
 
 // Compare two strings, returning negative, zero or positive (like strcmp).
 int compare(const char s[], const char t[]) {
-    return 0;
+    if (s > t) return 1;
+    else if (s < t) return -1;
+    else return 0;
+
 }
 
 // Join string s to the end of string t (like strcat).
