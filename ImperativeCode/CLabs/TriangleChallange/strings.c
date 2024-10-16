@@ -33,11 +33,36 @@ int compare(const char s[], const char t[]) {
 
 // Join string s to the end of string t (like strcat).
 void append(char t[], const char s[]) {
+    int lenT = length(t);
+    int lenS = length(s);
+    int i = 0;
+    while (i < lenS) {
+        t[lenT + i] = s[i];
+        i++;
+    }
+    t[lenT + i] = '\0';
 }
 
 // Find the (first) position of s in t, or return -1 (like strstr).
 int find(const char t[], const char s[]) {
-    return 0;
+    int lenT = length(t);
+    int lenS = length(s);
+    int i = 0;
+    while (i <= lenT - lenS) {
+        int j = 0;
+        int found = 0;
+        while (j < lenS) {
+            if (s[j] == t[i + j]){
+                found++;
+            }
+            j++;
+        }
+        if (found == lenS){
+            return i;
+        }
+        else i++;
+    }
+    return -1;
 }
 
 // -----------------------------------------------------------------------------
@@ -55,7 +80,7 @@ void assert(bool b) {
 }
 
 // Tests 1 to 5
-void testLength() {
+void testLength(void) {
     assert(length("") == 0);
     assert(length("c") == 1);
     assert(length("ca") == 2);
@@ -65,7 +90,7 @@ void testLength() {
 }
 
 // Tests 6 to 9
-void testCopy() {
+void testCopy(void) {
     char t[10];
     copy(t, "cat");
     assert(t[0] == 'c' && t[1] =='a' && t[2] == 't' && t[3] =='\0');
@@ -78,7 +103,7 @@ void testCopy() {
 }
 
 // Tests 10 to 17
-void testCompare() {
+void testCompare(void) {
     assert(compare("cat", "dog") < 0);
     assert(compare("dog", "cat") > 0);
     assert(compare("cat", "cat") == 0);
@@ -90,7 +115,7 @@ void testCompare() {
 }
 
 // Tests 18 to 20
-void testAppend() {
+void testAppend(void) {
     char t[10] = {'c', 'a', 't', '\0', 'x'};
     append(t, "");
     assert(t[0]=='c' && t[1]=='a' && t[2]=='t' && t[3]=='\0' && t[4]=='x');
@@ -103,7 +128,7 @@ void testAppend() {
 }
 
 // Tests 21 to 25
-void testFind() {
+void testFind(void) {
     assert(find("cat", "cat") == 0);
     assert(find("cat", "c") == 0);
     assert(find("cat", "t") == 2);
@@ -112,7 +137,7 @@ void testFind() {
 }
 
 // Test the functions.
-int main() {
+int main(void) {
     testLength();
     testCopy();
     testCompare();
