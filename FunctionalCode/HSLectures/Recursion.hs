@@ -14,7 +14,7 @@ fac4 = 4 * 3 * 2 * 1
 fac n 
     = if n < 1 
         then error "input was negative" 
-    else if n /=1 
+    else if n /= 1 
         then n * fac (n - 1) 
     else 1
 
