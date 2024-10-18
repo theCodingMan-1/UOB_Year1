@@ -62,13 +62,11 @@ typedef struct word Word;
 
 
 
-
-
-
-
 struct item {
     int x, y;
-} Item; //this combines the definition and the ailiasing of item
+};
+
+typedef struct item Item;
 
 void move(Item *i, int dx, int dy) {
     i -> x = i -> x + dx;
