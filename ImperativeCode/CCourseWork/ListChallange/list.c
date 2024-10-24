@@ -46,14 +46,16 @@ list *newList(payload e){
 // FUNCTION #2: Free up the list and all the data in it. Does not have to run in O(1).
 void freeList(list *xs){
   node *curr;
+  first(xs);
 
   
-  while (xs->current->next != xs->current) {
+  while (xs->current != xs->none) {
     curr = xs->current;
     xs->current = xs->current->next;
     free(curr);
 
   }
+  free(xs->none);
   
   free(xs);
 
@@ -65,7 +67,8 @@ void freeList(list *xs){
 // and no payload is selected.
 void first(list *xs){
   if (xs->current->back != xs->current) {
-    while (xs->current->back->x != -1) {
+
+    while (xs->current->back != xs->none) {
       xs->current = xs->current->back;
     }
     
@@ -74,13 +77,20 @@ void first(list *xs){
 }
 
 void last(list *xs){
+
+  if (xs->current->next != xs->current) {
+    while (xs->current->next != xs->none){
+      xs->current = xs->current->next;
+    }
+  }
   
 }
 
 // FUNCTION #5: Returns true if no payload is selected.
 // Otherwise it returns false.
 bool none(list *xs){
-  return false;
+  if (xs->current == xs->none) return true;
+  else return false;
 }
 
 // FUNCTION #6: Make the payload in the node following the currently selected payload the current payload
@@ -88,7 +98,11 @@ bool none(list *xs){
 // selected and true is returned. If the function is called while no payload
 // is selected then the function does nothing and returns false.
 bool after(list *xs){
-  return false;
+  if (none(xs)) return false;
+  else {
+    xs->current = xs->current->next;
+    return true;
+  }
 }
 
 // FUNCTION #7: Make the payload in the node before the currently selected payload the current payload
@@ -96,19 +110,27 @@ bool after(list *xs){
 // is selected and true is returned. If the function is called while no payload
 // is selected then the function does nothing and returns false.
 bool before(list *xs){
-  return false;
+  if (none(xs)) return false;
+  else {
+    xs->current = xs->current->back;
+    return true;
+  }
 }
 
 // FUNCTION #8: Return the current payload. If get is called and no payload is selected
 // then the default payload is returned.
 payload get(list *xs){
-  return NULL;
+  return xs->current->x;
 }
 
 // FUNCTION #9: Set the current payload to be the value of argument x and return true. If set is called
 // while no payload is selected then the function does nothing and returns false.
 bool set(list *xs, payload x){
-  return false;
+  if (none(xs)) return false;
+  else {
+    xs->current->x = x;
+    return true;
+  }
 }
 
 // FUNCTION #10: Insert a new node with payload x after the current payload and make it the current payload.
@@ -373,12 +395,12 @@ void testInvert() {
 int main() {
     testNewList();
     testFirst();
-    // testLast();
-    // testNone();
-    // testAfter();
-    // testBefore();
-    // testGet();
-    // testSet();
+    testLast();
+    testNone();
+    testAfter();
+    testBefore();
+    testGet();
+    testSet();
     // testInsertAfter();
     // testInsertBefore();
     // testDeleteToAfter();
