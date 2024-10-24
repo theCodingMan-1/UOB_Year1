@@ -11,3 +11,12 @@ typedef struct list {
     int capacity; // max of items storable with current allocation
     item *items; // pointer to the item array
 } list;
+
+
+void test() {
+    list *l = newList();
+    assert(check (l, 0, NULL));
+    insert(1, 0, 37);
+    freeList(l);
+}
+
