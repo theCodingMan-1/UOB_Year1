@@ -138,12 +138,45 @@ bool set(list *xs, payload x){
 // placed at the very beginning of the list.
 void insertAfter(list *xs, payload x){
 
+  // creates a new node that points back to the current node,
+  // and points forward to the node after the current node,
+  // with a payload value of x.
+  node *new = (node *) malloc(sizeof(node));
+  node *curr = xs->current;
+  node *n = curr->next;
+
+  new->back = curr; 
+  new->next = n; 
+  new->x = x;
+
+  
+  curr->next = new; // sets the node after the curr to be the new node
+  n->back = new; // sets the node n to point back to the new node
+  xs->current = new; // sets the new node to be the current node
+
+
 }
 
 // FUNCTION #11: Insert a new node with payload x before the current payload and make it the current payload.
 // If insertAfter is called while no payload is selected then the function inserts the payload into a new node  
 // placed at the very end of the list.
 void insertBefore(list *xs, payload x){
+  
+  // creates a new node that points back to the current node,
+  // and points forward to the node after the current node,
+  // with a payload value of x.
+  node *new = (node *) malloc(sizeof(node));
+  node *curr = xs->current;
+  node *b = curr->back;
+
+  new->next = curr; 
+  new->back = b; 
+  new->x = x;
+
+  
+  curr->back = new; // sets the node after the curr to be the new node
+  b->next = new; // sets the node n to point back to the new node
+  xs->current = new; // sets the new node to be the current node
 
 }
 
@@ -152,7 +185,21 @@ void insertBefore(list *xs, payload x){
 // the node with the last payload is deleted, no payload is selected, and true is returned. If 
 // deleteToAfter is called while no payload is selected then the function does nothing and returns false.
 bool deleteToAfter(list *xs){
-  return false; 
+  if (none(xs)) return false;
+  else {
+    node *curr = xs->current;
+    node *b = xs->current->back;
+    node *n = xs->current->next;
+
+    n->back = b; // makes n point back to b instead of curr
+    b->next = n; // makes b point forwards to n instead of curr
+    xs->current = n; // makes n the current payload
+    free(curr); // frees the previously current node
+
+    return true;
+
+
+  }
 }
 
 // FUNCTION #13: Delete the node with the current payload and make its predecessor the current payload,
@@ -160,13 +207,49 @@ bool deleteToAfter(list *xs){
 // the node with thw first payload is deleted, no payload is selected, and true is returned. If
 // deleteToBefore is called while no payload is selected then the function does nothing and returns false.
 bool deleteToBefore(list *xs){
-  return false;
+  if (none(xs)) return false;
+  else {
+    node *curr = xs->current;
+    node *b = xs->current->back;
+    node *n = xs->current->next;
+
+    n->back = b; // makes n point back to b instead of curr
+    b->next = n; // makes b point forwards to n instead of curr
+    xs->current = b; // makes b the current payload
+    free(curr); // frees the previously current node
+
+    return true;
+  
+  }
+
 }
 
 // FUNCTION #14: Invert the sequence of the list items, that is make the list start with the node and payload that originally had  
 // the last position and ensure that payloads originally situated before a payload will now be situated after it, and vice versa.
 // The selected payload is not changed by this function. Does not have to run in O(1).
 void invert(list *xs){
+  node *curr = xs->current;
+  node *b = xs->current->back;
+  node *n = xs->current->next;
+  
+  curr->back = n;
+  curr->next = b;
+
+  xs->current = curr->next;
+  while (xs->current != curr){
+    node *curr1 = xs->current;
+    node *b1 = xs->current->back;
+    node *n1 = xs->current->next;
+
+    curr1->back = n1;
+    curr1->next = b1;
+
+    xs->current = curr1->next;
+    
+
+  }
+
+
 
 }
 
@@ -401,12 +484,12 @@ int main() {
     testBefore();
     testGet();
     testSet();
-    // testInsertAfter();
-    // testInsertBefore();
-    // testDeleteToAfter();
-    // testDeleteToBefore();
-    // testInvert();
-    // printf("List module tests run OK.\n");
+    testInsertAfter();
+    testInsertBefore();
+    testDeleteToAfter();
+    testDeleteToBefore();
+    testInvert();
+    printf("List module tests run OK.\n");
     return 0;
 }
 #endif
