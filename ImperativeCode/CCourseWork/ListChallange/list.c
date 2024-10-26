@@ -25,6 +25,8 @@ struct list {
 typedef struct list list;
 
 
+// ---------- ADD YOUR 14 FUNCTIONS HERE TO SOLVE THE COURSEWORK ----------
+
 
 // FUNCTION #1: Create a new empty list on the Heap and make payload e the default payload. This default payload
 // can be returned by other functions in case no payload is selected. No payload is selected in an empty list.
@@ -256,7 +258,7 @@ void invert(list *xs){
 
 
 
-// ---------- ADD YOUR 14 FUNCTIONS HERE TO SOLVE THE COURSEWORK ----------
+
 
 
 
