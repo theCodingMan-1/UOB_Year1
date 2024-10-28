@@ -92,3 +92,47 @@ mapPlusTwo' xs = map (+2) xs
 
 mapShow' :: Show a => [a] -> [String]
 mapShow' xs = map show xs
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- >>> mapWords ["hello world", "happy halloween"]
+-- [["hello", "world"], ["happy", "halloween"]]
+
+mapWords :: [String] -> [[String]]
+mapWords [] = []
+mapWords (x : xs) = words x : mapWords xs
+
+
+mapWords' :: [String] -> [[String]]
+mapWords' xs = map words xs
+
+
+
+
+
+takeAway :: (Int, Int) -> Int
+takeAway (x, y) = x - y
+
+subtract :: Int -> Int -> Int
+subtract x y = x - y
+
+
+-- (curry takeAway) 2 1
+curry :: ((a , b) -> c) -> (a -> b -> c)
+curry f x y = f (x, y)
+
+
+-- (uncurry subtract) (2, 1)
+ -- 1
+uncurry :: (a -> b -> c) -> ((a, b) -> c)
+uncurry f (x, y) = f x y
