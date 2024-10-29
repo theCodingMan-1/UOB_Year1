@@ -7,39 +7,11 @@
 #include <limits.h>
 
 
-int convert(const char length[]) {
-
-    if (length[0] == '0') return -1; // no leading 0 -> "03" rejected
-
-    char *endptr;
-    int num = strtol(length, &endptr, 10);
-    // length is the string to be converted
-    // endptr used to store the pointer to the first character after the numeric value
-    // 10 represents the base of the number system.
-
-    if (endptr == length) return -1;
-    // this means no digits were found within the string (i.e "hello")
-
-    else if (*endptr != '\0') return -1;
-    // invalid character within the set (i.e "4y")
-    // this is because the characters do not have null characters after them
-
-    else if (num <= 0) return -1;
-    // if it is a negative number it returns -1
-    // also if it is a number bigger than 214748367 it doesn't fit within the integers
-    //      so it rolls over to the negatives which will return -1
-    //      (i.e 214748367 + 1 = -214748368)
-
-    else return num;
-
-
-}
-
 
 char* character(char number[]) {
     // int num = convert(number);
     // printf("%d\n", num);
-    if (number[0] == '0') return "Input Error"; // no leading 0 -> "03" rejected
+    if (number[0] == '0' && number[1] != '\0') return "Input Error"; // no leading 0 -> "03" rejected
 
     char *endptr;
     int num = strtol(number, &endptr, 10);
@@ -58,25 +30,24 @@ char* character(char number[]) {
         int power = 7;
         int q = 0;
         int r = num;
-        char output[11];
+        char output[10];
         while (power > 0) {
             int divider = pow(2, power);
             q = r / divider;
             r = r % divider;
-            char qStr[10];
+            char qStr[2];
+            
             sprintf(qStr, "%d", q);
-            strcat(output, qStr);
-            printf("%s\n", qStr);
-            printf("%s\n\n", output);
-            if (power == 4) strcat(output, " ");
+            if (power >= 4) output[7 - power] = qStr[0];
+            else output[8 - power] = qStr[0];
+            
+            if (power == 4) output[4] = ' ';
             power--;
         }
-        char rStr[11];
+        char rStr[2];
         sprintf(rStr, "%d", r);
-        strcat(output, rStr);
-        strcat(output, "\0");
-        printf("%s\n", rStr);
-        printf("%s\n\n", output);
+        output[8] = rStr[0];
+        output[9] = '\0';
 
         return output;
     }
@@ -91,14 +62,18 @@ void assert(int line, bool b) {
 
 
 void testCharacter(void){
-    assert(__LINE__, character("0") == "0000 0000");
-    assert(__LINE__, character("43") == "Input Error");
-    assert(__LINE__, character("255") == "1111 1111");
+    assert(__LINE__, strcmp(character("0"), "0000 0000") == 0);
+    assert(__LINE__, strcmp(character("43"), "0010 1011") == 0);
+    assert(__LINE__, strcmp(character("255"), "1111 1111") == 0);
     assert(__LINE__, character("-1") == "Input Error");
     assert(__LINE__, character("256") == "Input Error");
     assert(__LINE__, character("4.5") == "Input Error");
     assert(__LINE__, character("-0.65") == "Input Error");
     assert(__LINE__, character("-1") == "Input Error");
+    assert(__LINE__, character("05") == "Input Error");
+    assert(__LINE__, character("4z") == "Input Error");
+    assert(__LINE__, character("4T3") == "Input Error");
+    assert(__LINE__, character("hello") == "Input Error");
 
 
 }
