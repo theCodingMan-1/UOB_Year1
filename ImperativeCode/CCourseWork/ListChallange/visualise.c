@@ -2,7 +2,6 @@
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
 #include <stdbool.h>
 #include <limits.h>
 
@@ -30,67 +29,77 @@ char* convertToBin(long long num, int power) {
     const int constantPower = power;
     int adder = 0;
     int q = 0;
-    if (num / 2 == -4611686018427387904) {
-        num++;
-    }
-    long long r = labs(num);
-    int memory = constantPower + (constantPower / 4) + 2;
-    char output[memory];
-    char *p = output;
-    while (power > 0) {
-        if (power >= 63) q = 0;
-        else {
-            long long divider = pow(2, power);
-            q = r / divider;
-            r = r % divider;
-        }
+    if (num / 2 == -4611686018427387904){
+        return "1000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000";
 
-        char qStr[2];
-            
-        sprintf(qStr, "%d", q);
-        output[constantPower - power + adder] = qStr[0];
-                
-        if (power % 4 == 0) {
-            adder++;
-            output[constantPower - power + adder] = ' ';
+    } 
+    else{
+        long long r = labs(num);
+        int memory = constantPower + (constantPower / 4) + 2;
+        char output[memory];
+        char *p = output;
+        while (power > 0) {
+            if (power == 63) {
+                q = 0;
 
-        }
-        power--;
-    }
-    char rStr[2];
-    sprintf(rStr, "%lli", r);
-    output[memory - 2] = rStr[0];
-
-    if (num < 0) {
-        int counter = memory - 2;
-        int zero = 0;
-        while (counter >= 0) {
-            if ((output[counter] != ' ') && (zero == 1)) {
-
-                if (output[counter] == '1') output[counter] = '0';
-                else output[counter] = '1';
             }
-            if (output[counter] == '1') zero = 1;
-            counter--;
-        }    
+            else {
+                long long divider = pow(2, power);
+                q = r / divider;
+                r = r % divider;
+
+            }
+
+            
+
+            char qStr[2];
+                
+            sprintf(qStr, "%d", q);
+            output[constantPower - power + adder] = qStr[0];
+                    
+            if (power % 4 == 0) {
+                adder++;
+                output[constantPower - power + adder] = ' ';
+
+            }
+            power--;
+        }
+        char rStr[2];
+        sprintf(rStr, "%lli", r);
+        output[memory - 2] = rStr[0];
+
+        if (num < 0) {
+            int counter = memory - 2;
+            int zero = 0;
+            while (counter >= 0) {
+                if ((output[counter] != ' ') && (zero == 1)) {
+
+                    if (output[counter] == '1') output[counter] = '0';
+                    else output[counter] = '1';
+                }
+                if (output[counter] == '1') zero = 1;
+                counter--;
+            }    
+        }
+        output[memory - 1] = '\0';
+        return p;
+
     }
-    output[memory - 1] = '\0';
-    return p;
 
 }
 
 
 
-char* character(char number[]) {
+char* makeChar(char number[]) {
     long long num;
     if ((number[0] == '-') && (number[1] == '1') && (number[2] == '\0')) {
         num = -1;
     }
     else {
         num = convertToNum(number);
-        if (num == -1) return "Input Error";
+        if (num == -1) return "Input error.";
 
-        else if ((num < -128) || (num > 127)) return "Input Error";
+        else if ((num < -128) || (num > 127)) return "Input error.";
     }
 
     int power = 7;
@@ -99,16 +108,16 @@ char* character(char number[]) {
 }
 
 
-char* integer(char number[]) {
+char* makeInt(char number[]) {
     long long num;
     if ((number[0] == '-') && (number[1] == '1') && (number[2] == '\0')) {
         num = -1;
     }
     else {
         num = convertToNum(number);
-        if (num == -1) return "Input Error";
+        if (num == -1) return "Input error.";
 
-        else if ((num < -2147483648) || (num > 2147483647)) return "Input Error";
+        else if ((num < -2147483648) || (num > 2147483647)) return "Input error.";
     }
 
     int power = 31;  
@@ -123,14 +132,13 @@ char* makeLong(char number[]) {
     }
     else {
         num = convertToNum(number);
-        long long newNum = num;
-        if (num < 0) newNum++;
-        printf("%lli\n", newNum);
-        if (num == -1) return "Input Error";
+        if (num == -1) return "Input error.";
+
+        char backToString[strlen(number) + 1];
+        sprintf(backToString, "%lli", num);
+        if (strcmp(backToString, number) != 0) return "Input error.";
 
         
-
-        else if ((newNum < -9223372036854775807) || (newNum > 9223372036854775807)) return "Input Error";
     }
 
     int power = 63;  
@@ -142,12 +150,13 @@ char* makeLong(char number[]) {
 
 
 
-char* unCharacter(char number[]) {
+char* makeUnChar(char number[]) {
+
 
     long long num = convertToNum(number);
-    if (num == -1) return "Input Error";
+    if (num == -1) return "Input error.";
 
-    else if ((num < 0) || (num > 255)) return "Input Error";
+    else if ((num < 0) || (num > 255)) return "Input error.";
 
     
     int power = 7;
@@ -157,13 +166,13 @@ char* unCharacter(char number[]) {
 
 
 
-char* unInteger(char number[]) {
+char* makeUnInt(char number[]) {
 
 
     long long num = convertToNum(number);
-    if (num == -1) return "Input Error";
+    if (num == -1) return "Input error.";
 
-    else if ((num < 0) || (num > 4294967295)) return "Input Error";
+    else if ((num < 0) || (num > 4294967295)) return "Input error.";
 
     
     int power = 31;
@@ -186,82 +195,100 @@ void assert(int line, bool b) {
 
 
 
-void testCharacter(void) {
-    assert(__LINE__, strcmp(character("-128"), "1000 0000") == 0);
-    assert(__LINE__, strcmp(character("-104"), "1001 1000") == 0);
-    assert(__LINE__, strcmp(character("43"), "0010 1011") == 0);
-    assert(__LINE__, strcmp(character("127"), "0111 1111") == 0);
-    assert(__LINE__, strcmp(character("-1"), "1111 1111") == 0);
-    assert(__LINE__, strcmp(character("-129"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("128"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("4.5"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("-0.65"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("05"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("4z"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("4T3"), "Input Error") == 0);
-    assert(__LINE__, strcmp(character("hello"), "Input Error") == 0);
+void testChar(void) {
+    assert(__LINE__, strcmp(makeChar("-128"), "1000 0000") == 0);
+    assert(__LINE__, strcmp(makeChar("-104"), "1001 1000") == 0);
+    assert(__LINE__, strcmp(makeChar("43"), "0010 1011") == 0);
+    assert(__LINE__, strcmp(makeChar("127"), "0111 1111") == 0);
+    assert(__LINE__, strcmp(makeChar("-1"), "1111 1111") == 0);
+    assert(__LINE__, strcmp(makeChar("-129"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("128"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("4.5"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("-0.65"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("05"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("4z"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("4T3"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeChar("hello"), "Input error.") == 0);
 }
 
 
-void testInteger(void) {
-    assert(__LINE__, strcmp(integer("-2147483648"), "1000 0000 0000 0000 0000 0000 0000 0000") == 0);
-    assert(__LINE__, strcmp(integer("-987654321"), "1100 0101 0010 0001 1001 0111 0100 1111") == 0);
-    assert(__LINE__, strcmp(integer("1234567890"), "0100 1001 1001 0110 0000 0010 1101 0010") == 0);
-    assert(__LINE__, strcmp(integer("2147483647"), "0111 1111 1111 1111 1111 1111 1111 1111") == 0);
-    assert(__LINE__, strcmp(integer("-1"), "1111 1111 1111 1111 1111 1111 1111 1111") == 0);
-    assert(__LINE__, strcmp(integer("-2147483649"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("2147483648"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("4.5"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("-0.65"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("05"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("4z"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("4T3"), "Input Error") == 0);
-    assert(__LINE__, strcmp(integer("hello"), "Input Error") == 0);
+void testInt(void) {
+    assert(__LINE__, strcmp(makeInt("-2147483648"), "1000 0000 0000 0000 0000 0000 0000 0000") == 0);
+    assert(__LINE__, strcmp(makeInt("-987654321"), "1100 0101 0010 0001 1001 0111 0100 1111") == 0);
+    assert(__LINE__, strcmp(makeInt("1234567890"), "0100 1001 1001 0110 0000 0010 1101 0010") == 0);
+    assert(__LINE__, strcmp(makeInt("2147483647"), "0111 1111 1111 1111 1111 1111 1111 1111") == 0);
+    assert(__LINE__, strcmp(makeInt("-1"), "1111 1111 1111 1111 1111 1111 1111 1111") == 0);
+    assert(__LINE__, strcmp(makeInt("-2147483649"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("2147483648"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("4.5"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("-0.65"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("05"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("4z"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("4T3"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeInt("hello"), "Input error.") == 0);
+}
+
+
+void testLong(void) {
+    assert(__LINE__, strcmp(makeLong("-9223372036854775808"), "1000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000") == 0);
+    assert(__LINE__, strcmp(makeLong("-98765432123456789"), "1111 1110 1010 0001 0001 1101 0101 1100 1101 1110 0011 0001 1000 0010 1110 1011") == 0);
+    assert(__LINE__, strcmp(makeLong("1234567890987654321"), "0001 0001 0010 0010 0001 0000 1111 0100 1011 0001 0110 1100 0001 1100 1011 0001") == 0);
+    assert(__LINE__, strcmp(makeLong("9223372036854775807"), "0111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111") == 0);
+    assert(__LINE__, strcmp(makeLong("-1"), "1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111 1111") == 0);
+    assert(__LINE__, strcmp(makeLong("-9223372036854775809"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("9223372036854775808"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("4.5"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("-0.65"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("05"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("4z"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("4T3"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeLong("hello"), "Input error.") == 0);
 
 }
 
 
 
-void testUnCharacter(void){
-    assert(__LINE__, strcmp(unCharacter("0"), "0000 0000") == 0);
-    assert(__LINE__, strcmp(unCharacter("43"), "0010 1011") == 0);
-    assert(__LINE__, strcmp(unCharacter("255"), "1111 1111") == 0);
-    assert(__LINE__, strcmp(unCharacter("-1"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("256"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("4.5"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("-0.65"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("05"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("4z"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("4T3"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unCharacter("hello"), "Input Error") == 0);
+void testUnChar(void){
+    assert(__LINE__, strcmp(makeUnChar("0"), "0000 0000") == 0);
+    assert(__LINE__, strcmp(makeUnChar("43"), "0010 1011") == 0);
+    assert(__LINE__, strcmp(makeUnChar("255"), "1111 1111") == 0);
+    assert(__LINE__, strcmp(makeUnChar("-1"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("256"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("4.5"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("-0.65"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("05"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("4z"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("4T3"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnChar("hello"), "Input error.") == 0);
 
 
 }
 
 
 
-void testUnInteger(void) {
-    assert(__LINE__, strcmp(unInteger("0"), "0000 0000 0000 0000 0000 0000 0000 0000") == 0);
-    assert(__LINE__, strcmp(unInteger("1234567890"), "0100 1001 1001 0110 0000 0010 1101 0010") == 0);
-    assert(__LINE__, strcmp(unInteger("4294967295"), "1111 1111 1111 1111 1111 1111 1111 1111") == 0);
-    assert(__LINE__, strcmp(unInteger("-1"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("4294967296"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("4.5"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("-0.65"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("05"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("4z"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("4T3"), "Input Error") == 0);
-    assert(__LINE__, strcmp(unInteger("hello"), "Input Error") == 0);
+void testUnInt(void) {
+    assert(__LINE__, strcmp(makeUnInt("0"), "0000 0000 0000 0000 0000 0000 0000 0000") == 0);
+    assert(__LINE__, strcmp(makeUnInt("1234567890"), "0100 1001 1001 0110 0000 0010 1101 0010") == 0);
+    assert(__LINE__, strcmp(makeUnInt("4294967295"), "1111 1111 1111 1111 1111 1111 1111 1111") == 0);
+    assert(__LINE__, strcmp(makeUnInt("-1"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("4294967296"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("4.5"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("-0.65"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("05"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("4z"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("4T3"), "Input error.") == 0);
+    assert(__LINE__, strcmp(makeUnInt("hello"), "Input error.") == 0);
 
 }
 
 
 
 void test(void) {
-    testCharacter();
-    testInteger();
-    testUnCharacter();
-    testUnInteger();
+    testChar();
+    testInt();
+    testLong();
+    testUnChar();
+    testUnInt();
     printf("All Tests Pass!\n");
 }
 
@@ -273,16 +300,23 @@ int main(int n, char *args[n]) {
         test();
     }
     else if (n == 3) {
-        if (strcmp(args[1], "char") == 0) printf("%s\n", character(args[2]));
-        else if (strcmp(args[1], "int") == 0) printf("%s\n", integer(args[2]));
+        if (strcmp(args[1], "char") == 0) printf("%s\n", makeChar(args[2]));
+        else if (strcmp(args[1], "int") == 0) printf("%s\n", makeInt(args[2]));
         else if (strcmp(args[1], "long") == 0) printf("%s\n", makeLong(args[2]));
+        else {
+            printf("Use e.g.: ./visualise char 7\n");
+        }
     }
     else if (n == 4) {
         if ((strcmp(args[1], "unsigned") == 0) && (strcmp(args[2], "char") == 0)){
-            printf("%s\n", unCharacter(args[3]));
+            printf("%s\n", makeUnChar(args[3]));
         }
         else if ((strcmp(args[1], "unsigned") == 0) && (strcmp(args[2], "int") == 0)){
-            printf("%s\n", unInteger(args[3]));
+            printf("%s\n", makeUnInt(args[3]));
+        }
+
+        else {
+            printf("Use e.g.: ./visualise unsigned char 7\n");
         }
         
 
