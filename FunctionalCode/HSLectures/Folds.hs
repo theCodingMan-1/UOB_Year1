@@ -1,6 +1,7 @@
 -- Folds are an example of a higher order function (HO)
 
 import Prelude hiding(sum, length, foldr)
+import Data.Bits (Bits(xor))
 
 -- >>> sum [1, 2, 3]
 -- 6
@@ -68,3 +69,27 @@ length' xs = foldr f 0 xs
     where
         f :: a -> Int -> Int
         f x l = l + 1
+
+
+
+
+
+
+
+
+maximum :: Ord a => [a] -> Maybe a
+maximum = foldr f k
+    where
+        k :: Maybe a
+        k = Nothing
+
+        f :: Ord a => a -> Maybe a -> Maybe a
+        f x Nothing = Just x
+        f x (Just y) = Just (max x y)
+
+
+
+
+average :: [Int] -> Int
+average xs = sum xs `div` length xs
+
