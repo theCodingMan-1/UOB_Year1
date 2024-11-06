@@ -14,7 +14,7 @@ A pointer is a reference to an address in memory.
 Pointers are variables, which live in memory, and thus have an address.
 Pointers can also be typed so that they keep information about a type 
     of the item stored at that address.
-    int type pointer -> int * pointerName
+    int type pointer -> int * pointerName 
 
 */
 
