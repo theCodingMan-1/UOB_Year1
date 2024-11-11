@@ -16,3 +16,4 @@ class Functor f where
 
 instance Functor Maybe where
     fmap :: (a -> b) -> Maybe a -> Maybe b
+    
