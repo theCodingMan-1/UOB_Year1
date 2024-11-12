@@ -1,8 +1,10 @@
+{-# OPTIONS_GHC -Wno-overlapping-patterns #-}
 module Simplify where
 -- Write all of your code in this file!
 
 import Expr
 import Poly
+import Control.Concurrent (yield)
 
 --------------------------------------------------------------------------------
 -- * Task 1
@@ -21,12 +23,28 @@ add (ExpX x) (NumLit y)
     | y == 0 = ExpX x
     | otherwise = Op AddOp (ExpX x) (NumLit y)
 add (NumLit x) (NumLit y) = NumLit (x + y)
-add (ExpX x) (ExpX y) 
+add (ExpX x) (ExpX y)
     | x == 0 && y == 0 = NumLit 2
     | x == 0 = Op AddOp (NumLit 1) (ExpX y)
     | y == 0 = Op AddOp (ExpX x) (NumLit 1)
     | x == y = Op MulOp (NumLit 2) (ExpX x)
     | otherwise = Op AddOp (ExpX x) (ExpX y)
+
+
+-- add (Op AddOp x y) z = Op AddOp (add x y) z
+-- add x (Op AddOp y z) = Op AddOp x (add y z)
+-- add (Op AddOp x y) (Op AddOp z a) = Op AddOp (add x y) (add z a)
+
+
+add x y  
+    | x == NumLit 0 = y
+    | y == NumLit 0 = x
+
+    |otherwise = Op AddOp x y
+
+
+
+
 
 
 
@@ -55,13 +73,37 @@ add (ExpX x) (ExpX y)
 --     | x == y = prettyExpr (Op MulOp (NumLit 2) (ExpX x))
 --     | otherwise = prettyExpr (Op AddOp (ExpX x) (ExpX y))
 
+-- add x y = prettyExpr(Op AddOp x y)
+
 --------------------------------------------------------------------------------
 -- * Task 2
 -- Define mul, which multiplies 2 expressions together without introducing
 -- any 'junk'.
 
 mul :: Expr -> Expr -> Expr
-mul expr1 expr2 = error "Implement me!"
+mul (NumLit x) (NumLit y) = NumLit (x * y)
+mul (NumLit x) (ExpX y)
+    | x == 0 = NumLit 0
+    | y == 0 = NumLit x
+    | x == 1 = ExpX y
+    | otherwise = Op MulOp (NumLit x) (ExpX y)
+mul (ExpX x) (NumLit y)
+    | y == 0 = NumLit 0
+    | x == 0 = NumLit y
+    | y == 1 = ExpX x
+    | otherwise = Op MulOp (ExpX x) (NumLit y)
+mul (ExpX x) (ExpX y)
+    | y == 0 && x == 0 = NumLit 1
+    | y == 0 = ExpX x
+    | x == 0 = ExpX y
+    | otherwise = ExpX (x + y)
+
+mul x y
+    | x == NumLit 0 || y == NumLit 0 = NumLit 0
+    | x == NumLit 1 = y
+    | y == NumLit 1 = x
+
+    |otherwise = Op MulOp x y
 
 --------------------------------------------------------------------------------
 -- * Task 3
