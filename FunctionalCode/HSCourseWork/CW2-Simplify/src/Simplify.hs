@@ -36,7 +36,7 @@ add (ExpX x) (ExpX y)
 -- add (Op AddOp x y) (Op AddOp z a) = Op AddOp (add x y) (add z a)
 
 
-add x y  
+add x y
     | x == NumLit 0 = y
     | y == NumLit 0 = x
 
@@ -111,7 +111,7 @@ mul x y
 -- a single expression without introducing any 'junk'.
 
 addAll :: [Expr] -> Expr
-addAll exprs = error "Implement me!"
+addAll xs = foldr add (NumLit 0) xs
 
 --------------------------------------------------------------------------------
 -- * Task 4
@@ -119,7 +119,7 @@ addAll exprs = error "Implement me!"
 -- a single expression without introducing any 'junk'.
 
 mulAll :: [Expr] -> Expr
-mulAll exprs = error "Implement me!"
+mulAll xs = foldr mul (NumLit 1) xs
 
 --------------------------------------------------------------------------------
 -- * Task 5
