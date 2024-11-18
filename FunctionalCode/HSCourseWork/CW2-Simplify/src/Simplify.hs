@@ -111,12 +111,14 @@ listToExpr xs = listToExpr' 0 xs
     where
         listToExpr' :: Int -> [Int] -> Expr
         listToExpr' a [] = NumLit 0
-        listToExpr a (x : xs)
-            | a == 0 = Op AddOp (NumLit x) (listToExpr 1 xs)
-            | otherwise = Op AddOp (Op MulOp (NumLit x) (ExpX a)) (listToExpr (a + 1) xs)
+        listToExpr' a (x : xs)
+            | a == 0 = add (NumLit x) (listToExpr' 1 xs)
+            | x == 0 = listToExpr' (a + 1) xs
+            | otherwise = add (mul (NumLit x) (ExpX a)) (listToExpr' (a + 1) xs)
 
 polyToExpr :: Poly -> Expr
 polyToExpr poly = listToExpr (reverse (polyToList poly))
+
 
 --------------------------------------------------------------------------------
 -- * Task 7
@@ -124,6 +126,6 @@ polyToExpr poly = listToExpr (reverse (polyToList poly))
 -- polynomial and back again.
 
 simplify :: Expr -> Expr
-simplify expr = error "Implement me!"
+simplify expr = polyToExpr (exprToPoly expr)
 
 --------------------------------------------------------------------------------
