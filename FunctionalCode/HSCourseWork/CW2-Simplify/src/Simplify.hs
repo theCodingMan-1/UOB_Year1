@@ -116,7 +116,7 @@ listToExpr xs = listToExpr' 0 xs
             | otherwise = Op AddOp (Op MulOp (NumLit x) (ExpX a)) (listToExpr (a + 1) xs)
 
 polyToExpr :: Poly -> Expr
-polyToExpr poly = listToExpr(reverse(polyToList(poly)))
+polyToExpr poly = listToExpr (reverse (polyToList poly))
 
 --------------------------------------------------------------------------------
 -- * Task 7
