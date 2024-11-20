@@ -9,6 +9,14 @@
 // Allocate memory for a drawing state and initialise it
 state *newState() {
   state *p = malloc(sizeof(state));
+  p->x = 0;
+  p->y = 0;
+  p ->tx = 0;
+  p->ty = 0;
+  p->tool = LINE;
+  p->start = 0;
+  p->data = 0;
+  p->end = 0;
   return p;
 }
 
@@ -19,19 +27,69 @@ void freeState(state *s) {
 
 // Extract an opcode from a byte (two most significant bits).
 int getOpcode(byte b) {
-  //TO DO
-  return 0; // this is a placeholder only
+
+  //0000 0000 - 0011 1111 -> DX
+  //0100 0000 - 0111 1111 -> DY
+  //1000 0000 - 1011 1111 -> TOOL
+  if (b <= 0b00111111) return DX;
+  else if (b >= 0b01000000 && b <= 0b01111111) return DY;
+  else if (b >= 0b10000000 && b <= 0b10111111) return TOOL;
+
+
+
 }
 
 // Extract an operand (-32..31) from the rightmost 6 bits of a byte.
 int getOperand(byte b) {
-  //TO DO
-  return 0; // this is a placeholder only
+
+  if (b >= 0b01000000) b -= 0b01000000;
+  else if (b >= 0b11000000) b -= 0b11000000;
+
+  int num = b;
+
+  if (b <= 0b00011111) {
+    return num;
+  }
+  else {
+    num -= 64;
+    return num;
+  }
+
+  // 0001 1111 -> 31
+  //0010 0000 -> 32 : -32
+  //0010 0001 -> 33 : -31
+
 }
 
 // Execute the next byte of the command sequence.
 void obey(display *d, state *s, byte op) {
+  int opcode = getOpcode(op);
+  int operand = getOperand(op);
+
+
+  if (opcode == TOOL) {
+    s->tool = operand;
+    
+  }
+
+  else if (opcode == DX) {
+    s->tx = s->tx + operand;
+
+  }
+  else if (opcode == DY) {
+    s->ty = s->ty + operand;
+    if (s->tool == LINE) line(d, s->x, s->y, s->tx, s->ty);
+    s->x = s-> tx;
+    s->y = s-> ty;
+
+  }
+
   //TO DO
+  // 0001 1110 -> DX : 30
+  // 0101 1110 -> DY : 30
+  // 1000 0000 -> TOOL : NONE
+  // 0111 1111 -> DY : -1
+
 }
 
 // Draw a frame of the sketch file. For basic and intermediate sketch files
