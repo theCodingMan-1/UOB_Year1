@@ -97,6 +97,36 @@ void obey(display *d, state *s, byte op) {
 // For advanced sketch files this means drawing the current frame whenever
 // this function is called.
 bool processSketch(display *d, const char pressedKey, void *data) {
+  if (data == NULL) return (pressedKey == 27);
+  const int max = sizeof(byte);
+
+  state *s = (state*) data;
+  char *filename = getName(d);
+  FILE *file = fopen(filename, "rb");
+  char line[max], name[100];
+  // int n;
+  byte *b = malloc(max);
+
+  b = fgetc(file);
+  while (! feof(file)) {
+    obey(d, s, b);
+    b = fgetc(file);
+    
+  }
+
+
+  fclose(file);
+
+  show(d);
+  s->x = 0;
+  s->y = 0;
+  s->tx = 0;
+  s->ty = 0;
+  s->tool = LINE;
+  s->data = 0;
+  s->end = 0;
+
+  return (pressedKey == 27);
 
     //TO DO: OPEN, PROCESS/DRAW A SKETCH FILE BYTE BY BYTE, THEN CLOSE IT
     //NOTE: CHECK DATA HAS BEEN INITIALISED... if (data == NULL) return (pressedKey == 27);
@@ -104,8 +134,6 @@ bool processSketch(display *d, const char pressedKey, void *data) {
     //NOTE: TO GET THE FILENAME... char *filename = getName(d);
     //NOTE: DO NOT FORGET TO CALL show(d); AND TO RESET THE DRAWING STATE APART FROM
     //      THE 'START' FIELD AFTER CLOSING THE FILE
-
-  return (pressedKey == 27);
 }
 
 // View a sketch file in a 200x200 pixel window given the filename
