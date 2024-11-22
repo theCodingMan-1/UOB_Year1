@@ -28,12 +28,17 @@ void freeState(state *s) {
 // Extract an opcode from a byte (two most significant bits).
 int getOpcode(byte b) {
 
+
   //0000 0000 - 0011 1111 -> DX
   //0100 0000 - 0111 1111 -> DY
   //1000 0000 - 1011 1111 -> TOOL
+  //1100 0000 - 1111 1111 -> DATA
+
   if (b <= 0b00111111) return DX;
   else if (b >= 0b01000000 && b <= 0b01111111) return DY;
   else if (b >= 0b10000000 && b <= 0b10111111) return TOOL;
+
+  else if (b >= 0b11000000) return DATA; //In
 
 
 
@@ -55,6 +60,8 @@ int getOperand(byte b) {
     return num;
   }
 
+  
+
   // 0001 1111 -> 31
   //0010 0000 -> 32 : -32
   //0010 0001 -> 33 : -31
@@ -67,20 +74,49 @@ void obey(display *d, state *s, byte op) {
   int operand = getOperand(op);
 
 
-  if (opcode == TOOL) {
-    s->tool = operand;
-    
-  }
 
-  else if (opcode == DX) {
+
+
+  if (opcode == DX) {
     s->tx = s->tx + operand;
 
   }
   else if (opcode == DY) {
     s->ty = s->ty + operand;
     if (s->tool == LINE) line(d, s->x, s->y, s->tx, s->ty);
+    if (s->tool == BLOCK) block(d, s->x, s->y, abs(s->tx - s->x), abs(s->ty - s->y));
+
     s->x = s-> tx;
     s->y = s-> ty;
+
+  }
+
+  else if (opcode == TOOL) {
+    if (operand == COLOUR) {
+      colour(d, s->data);
+    }
+    else if (operand == TARGETX) s->tx = s->data;
+    else if (operand == TARGETY) s->ty = s->data;
+    else s->tool = operand;
+    
+    // xxxx xxxx  xxxx xxxx  xxxx xxxx  xxxx xxxx
+    //Hex
+    //a -> 1010
+    //b -> 1011
+    //c -> 1100
+    //d -> 1101
+    //e -> 1110
+    //f -> 1111
+
+    s->data = 0; //In
+  }
+
+  //In
+  else if (opcode == DATA) {
+    s->data *= 64; //0b1000000
+    if (operand >= 64) operand -= 64;
+    s->data += operand;
+
 
   }
 
