@@ -1,0 +1,8 @@
+Your submission was successful!
+Course: COMS10016_2024_TB-1, Imperative and Functional Programming 2024
+Assessment: SKETCH
+
+Submission date: 27/11/2024, 12:03
+Submission size: 5.1 KB
+Submitter: Bryn Peters
+Confirmation number: 40d1245c9ff649868fa40ac549dd5f88

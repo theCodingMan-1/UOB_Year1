@@ -30,7 +30,7 @@ snoc' x (y : xs) = y : snoc' x xs
 
 -- 1.6 returns the first n items in the list
 take' :: Int -> [Int] -> [Int]
-take' 1 (x : xs) = [x] 
+take' 1 (x : xs) = [x]
 -- when you get down to y = 1, you take the element at the front of the list (x)
 
 take' y (x : xs) = x : take' (y - 1) (xs)
@@ -70,3 +70,30 @@ combine' :: [Int] -> [Int] -> [Int]
 combine' [] [] = []
 combine' as [] = as
 combine' (as) (b : bs) = combine' (snoc' b as) bs
+
+
+
+-- 2.1
+squaresUpto :: Int -> [Int]
+squaresUpto x
+    | x <= 0 = [0]
+    | otherwise = squaresUpto (x - 1) ++ [x * x]
+
+--2.2
+odds :: Int -> [Int]
+odds x = filter odd [1..x]
+
+--2.3
+tuple :: Int -> [Int] -> [(Int, Int)]
+tuple x [] = []
+tuple x (y : ys) = (x , y) : tuple x ys
+
+order :: [Int] -> [(Int, Int)]
+order [] = []
+order (x : xs) = tuple x xs ++ order xs
+
+orderedPairs :: [Int] -> [(Int, Int)]
+orderedPairs xs = order (isort xs)
+
+
+--2.4
