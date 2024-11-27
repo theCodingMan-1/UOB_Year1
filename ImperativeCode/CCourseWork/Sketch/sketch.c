@@ -22,6 +22,14 @@ state *newState() {
 
 // Release all memory associated with the drawing state
 void freeState(state *s) {
+  // free(s->x);
+  // free(s->y);
+  // free(s->tx);
+  // free(s->ty);
+  // free(s->tool);
+  // free(s->start);
+  // free(s->data);
+  // free(s->end);
   free(s);
 }
 
@@ -73,10 +81,6 @@ void obey(display *d, state *s, byte op) {
   int opcode = getOpcode(op);
   int operand = getOperand(op);
 
-
-
-
-
   if (opcode == DX) {
     s->tx = s->tx + operand;
 
@@ -92,23 +96,18 @@ void obey(display *d, state *s, byte op) {
   }
 
   else if (opcode == TOOL) {
-    if (operand == COLOUR) {
-      colour(d, s->data);
-    }
+    if (operand == COLOUR) colour(d, s->data);
     else if (operand == TARGETX) s->tx = s->data;
     else if (operand == TARGETY) s->ty = s->data;
-    else s->tool = operand;
-    
-    // xxxx xxxx  xxxx xxxx  xxxx xxxx  xxxx xxxx
-    //Hex
-    //a -> 1010
-    //b -> 1011
-    //c -> 1100
-    //d -> 1101
-    //e -> 1110
-    //f -> 1111
+    else if (operand == SHOW) show(d);
+    else if (operand == PAUSE) pause(d, s->data);
+    else if (operand == NEXTFRAME) s->end = 1;
 
-    s->data = 0; //In
+    else s->tool = operand;
+  
+
+    s->data = 0; 
+    
   }
 
   //In
@@ -116,6 +115,7 @@ void obey(display *d, state *s, byte op) {
     s->data *= 64; //0b1000000
     if (operand >= 64) operand -= 64;
     s->data += operand;
+    
 
 
   }
@@ -135,22 +135,34 @@ void obey(display *d, state *s, byte op) {
 bool processSketch(display *d, const char pressedKey, void *data) {
   if (data == NULL) return (pressedKey == 27);
   const int max = sizeof(byte);
+  int count = 0;
 
   state *s = (state*) data;
   char *filename = getName(d);
   FILE *file = fopen(filename, "rb");
-  char line[max], name[100];
-  // int n;
   byte *b = malloc(max);
 
   b = fgetc(file);
-  while (! feof(file)) {
-    obey(d, s, b);
+  while ((! feof(file)) && (s->end == 0)) {
+    count += 1;
+    if (count >= s->start){
+      obey(d, s, b);
+    }
+    if (s->end == 1) {
+      s->start = ftell(file) + 1;
+      
+    }
     b = fgetc(file);
+
+
+    if (feof(file)) s->start = 0;
+
+    
+    
     
   }
 
-
+  // free(b);
   fclose(file);
 
   show(d);
