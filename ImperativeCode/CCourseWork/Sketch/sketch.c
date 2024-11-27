@@ -140,29 +140,24 @@ bool processSketch(display *d, const char pressedKey, void *data) {
   state *s = (state*) data;
   char *filename = getName(d);
   FILE *file = fopen(filename, "rb");
-  byte *b = malloc(max);
 
-  b = fgetc(file);
+  unsigned char b = fgetc(file);
   while ((! feof(file)) && (s->end == 0)) {
     count += 1;
-    if (count >= s->start){
-      obey(d, s, b);
-    }
-    if (s->end == 1) {
-      s->start = ftell(file) + 1;
+    if (count >= s->start) obey(d, s, b);
+
+    if (s->end == 1) s->start = ftell(file) + 1;
       
-    }
     b = fgetc(file);
 
-
     if (feof(file)) s->start = 0;
+
+    
 
     
     
     
   }
-
-  // free(b);
   fclose(file);
 
   show(d);
@@ -176,12 +171,12 @@ bool processSketch(display *d, const char pressedKey, void *data) {
 
   return (pressedKey == 27);
 
-    //TO DO: OPEN, PROCESS/DRAW A SKETCH FILE BYTE BY BYTE, THEN CLOSE IT
-    //NOTE: CHECK DATA HAS BEEN INITIALISED... if (data == NULL) return (pressedKey == 27);
-    //NOTE: TO GET ACCESS TO THE DRAWING STATE USE... state *s = (state*) data;
-    //NOTE: TO GET THE FILENAME... char *filename = getName(d);
-    //NOTE: DO NOT FORGET TO CALL show(d); AND TO RESET THE DRAWING STATE APART FROM
-    //      THE 'START' FIELD AFTER CLOSING THE FILE
+  //TO DO: OPEN, PROCESS/DRAW A SKETCH FILE BYTE BY BYTE, THEN CLOSE IT
+  //NOTE: CHECK DATA HAS BEEN INITIALISED... if (data == NULL) return (pressedKey == 27);
+  //NOTE: TO GET ACCESS TO THE DRAWING STATE USE... state *s = (state*) data;
+  //NOTE: TO GET THE FILENAME... char *filename = getName(d);
+  //NOTE: DO NOT FORGET TO CALL show(d); AND TO RESET THE DRAWING STATE APART FROM
+  //      THE 'START' FIELD AFTER CLOSING THE FILE
 }
 
 // View a sketch file in a 200x200 pixel window given the filename
