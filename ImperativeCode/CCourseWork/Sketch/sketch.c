@@ -22,14 +22,6 @@ state *newState() {
 
 // Release all memory associated with the drawing state
 void freeState(state *s) {
-  // free(s->x);
-  // free(s->y);
-  // free(s->tx);
-  // free(s->ty);
-  // free(s->tool);
-  // free(s->start);
-  // free(s->data);
-  // free(s->end);
   free(s);
 }
 
