@@ -97,3 +97,21 @@ orderedPairs xs = order (isort xs)
 
 
 --2.4
+-- bitString :: Int -> [String]
+-- bitString x = bitString' x ""
+--     where
+--         bitString' :: Int -> String -> [String]
+--         bitString' x text
+--             | x == 0 = [text]
+--             | otherwise = (bitString' (x - 1) (text ++ "0")) ++ (bitString' (x - 1) (text ++ "1"))
+
+
+bitString :: Int -> [String]
+bitString 0 = [""]
+bitString  = [a ++ b | a <- ["0", "1"], y <- bitString (n - 1)]
+
+
+
+
+--3.1
+

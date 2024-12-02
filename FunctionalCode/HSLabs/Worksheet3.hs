@@ -103,7 +103,7 @@ addTwo x = x + 2
 
 -- 3.2
 
-data RPS = Rock | Paper | Scissors deriving (Show, Eq, Ord)
+data RPS = Rock | Paper | Scissors deriving (Show, Eq)
 -- Eq -> Checks whether two values of type RPS are equal.
 
 shoot :: RPS -> RPS -> Bool
@@ -117,3 +117,56 @@ shoot x y
 
 
 -- 3.3
+instance Ord RPS where
+
+    Scissors <= Rock = True
+    Paper <= Scissors = True
+    Rock <= Paper = True
+    player1 <= player2 = player1 == player2
+
+
+
+
+
+--4.1
+data Suit = Hearts | Diamonds | Clubs | Spades deriving (Show, Eq)
+type Pip = Int
+type Rank = Either Pip Court
+data Card = Joker | Card Suit Rank deriving Show
+
+data Court = Ace | Jack | Queen | King deriving (Show, Eq, Ord)
+
+
+--4.2
+instance Eq Card where
+    Joker == Joker = True
+    (Card s1 r1) == (Card s2 r2) = s1 == s2 && r1 == r2
+
+
+--4.3
+snap :: Card -> Card -> String
+snap Joker Joker = "SNAP"
+snap (Card s1 r1) (Card s2 r2)
+    | r1 == r2 = "SNAP"
+    | otherwise = "..."
+snap x y = "..."
+
+
+--4.4
+instance Ord Card where
+    card <= Joker = True
+    Joker <= card = False
+    (Card s r) <= (Card s' r')
+        | s' == Spades && s != Spades = True
+        | s' != Spades && s == Spades = False
+        | s' == Hearts && s != Hearts = True
+        | s' != Hearts && s == Hearts = False
+        | otherwise = f <= f'
+
+
+
+play :: [Card] -> Card -> Maybe Card
+play [] y = Nothing
+play (x : xs) y
+    | x >= y = Just x
+    | otherwise = play xs y
