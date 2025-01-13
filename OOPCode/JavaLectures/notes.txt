@@ -1,0 +1,14 @@
+Software:
+- an amalgomation of multiple programs.
+
+
+Structure of Classes:
+- Name: Robot (must be uppercase)
+- Attributes:
+    String name
+    int numLegs
+    float powerLevel
+- Methods:
+    void talk(String)
+    void charge(float)
+    
